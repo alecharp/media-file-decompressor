@@ -46,6 +46,17 @@
         </developer>
     </developers>
 
+    <dependencyManagement>
+        <dependencies>
+            <!-- tests -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.11</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
     <build>
         <plugins>
             <plugin>
@@ -69,6 +80,11 @@
                         <groupId>org.apache.rat</groupId>
                         <artifactId>apache-rat-plugin</artifactId>
                         <version>0.8</version>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/test/resources/**</exclude>
+                            </excludes>
+                        </configuration>
                         <executions>
                             <execution>
                                 <phase>validate</phase>

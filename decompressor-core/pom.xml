@@ -26,4 +26,13 @@
 
     <artifactId>decompressor-core</artifactId>
     <packaging>jar</packaging>
+
+    <dependencies>
+        <!--tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
