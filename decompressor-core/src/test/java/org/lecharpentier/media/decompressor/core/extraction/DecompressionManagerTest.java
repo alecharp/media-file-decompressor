@@ -19,10 +19,18 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
 public class DecompressionManagerTest {
+
+    @Test
+    public void rarExtension() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        Decompression decompressionImplForFile = DecompressionManager.getInstance().getDecompressionImplForFile("toto.rar");
+        assertThat(decompressionImplForFile).isInstanceOfAny(Decompression.class).isInstanceOf(DecompressionRarImpl.class);
+    }
 
     @Test(expected = UnsupportedOperationException.class)
     public void unsupportedExtension() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
