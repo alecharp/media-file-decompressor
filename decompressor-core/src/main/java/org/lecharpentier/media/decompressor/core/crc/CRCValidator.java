@@ -50,4 +50,11 @@ public class CRCValidator {
             throw new CRCMismatchException(String.format("File %s doesn't match the CRC %s.", input.getName(), crc));
         }
     }
+
+    /**
+     * @see CRCValidator#valid(java.io.File, String)
+     */
+    public void valid(ArchiveResource resource) throws IOException, CRCMismatchException {
+        valid(resource.getFile(), resource.getCrc());
+    }
 }
