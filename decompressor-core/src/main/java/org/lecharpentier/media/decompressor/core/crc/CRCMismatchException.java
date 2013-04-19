@@ -20,7 +20,19 @@ package org.lecharpentier.media.decompressor.core.crc;
  */
 public class CRCMismatchException extends Exception {
 
+    public CRCMismatchException() {
+    }
+
     public CRCMismatchException(String message) {
         super(message);
     }
+
+    public CRCMismatchException(Throwable cause) {
+        super(cause);
+    }
+
+    public CRCMismatchException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

@@ -21,7 +21,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.zip.CRC32;
 
 /**
@@ -35,26 +34,28 @@ public class CRCValidator {
      * The given CRC must be the Hexadecimal representation of the CRC.
      *
      * @param input the file to test
-     * @param crc the expected CRC of the file, in hexadecimal mode.
+     * @param crc   the expected CRC of the file, in hexadecimal mode.
      * @throws CRCMismatchException if the CRC doesn't match the computed CRC of the file
-     * @throws IOException if there are issues about the file
+     * @throws IOException          if there are issues about the file
      */
-    public void valid(File input, String crc) throws IOException, CRCMismatchException {
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(input));
-        CRC32 crc32 = new CRC32();
-        int cnt;
-        while ((cnt = inputStream.read()) != -1) {
-            crc32.update(cnt);
-        }
-        if (!crc.equals(Long.toHexString(crc32.getValue()))) {
-            throw new CRCMismatchException(String.format("File %s doesn't match the CRC %s.", input.getName(), crc));
+    public void validate(File input, String crc) throws IOException, CRCMismatchException {
+        try (FileInputStream fis = new FileInputStream(input);
+             BufferedInputStream inputStream = new BufferedInputStream(fis)) {
+            CRC32 crc32 = new CRC32();
+            int cnt;
+            while ((cnt = inputStream.read()) != -1) {
+                crc32.update(cnt);
+            }
+            if (!crc.equals(Long.toHexString(crc32.getValue()))) {
+                throw new CRCMismatchException(String.format("File %s doesn't match the CRC %s.", input.getName(), crc));
+            }
         }
     }
 
     /**
-     * @see CRCValidator#valid(java.io.File, String)
+     * @see CRCValidator#validate(java.io.File, String)
      */
-    public void valid(ArchiveResource resource) throws IOException, CRCMismatchException {
-        valid(resource.getFile(), resource.getCrc());
+    public void validate(ArchiveResource resource) throws IOException, CRCMismatchException {
+        validate(resource.getFile(), resource.getCrc());
     }
 }
