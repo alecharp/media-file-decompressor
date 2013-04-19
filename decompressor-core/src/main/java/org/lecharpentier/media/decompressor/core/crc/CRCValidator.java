@@ -21,6 +21,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.zip.CRC32;
 
 /**
@@ -57,5 +58,12 @@ public class CRCValidator {
      */
     public void validate(ArchiveResource resource) throws IOException, CRCMismatchException {
         validate(resource.getFile(), resource.getCrc());
+    }
+
+    /**
+     * @see CRCValidator#validate(java.io.File, String)
+     */
+    public void validate(Path path, String crc) throws IOException, CRCMismatchException {
+        validate(path.toFile(), crc);
     }
 }
