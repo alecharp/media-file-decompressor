@@ -16,15 +16,9 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
-import java.io.File;
-
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
-@Decompressor(extensions = {"rar"})
-public class DecompressionRarImpl implements Decompression {
-
-    @Override
-    public void extraction(File archiveFile) throws ExtractionError {
-    }
+@Decompressor(extensions = {"notimplementinginterface"})
+public class NotImplementingDecompression {
 }

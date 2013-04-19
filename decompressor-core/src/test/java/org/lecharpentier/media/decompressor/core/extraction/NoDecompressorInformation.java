@@ -13,13 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lecharpentier.media.decompressor.core.extraction;
+
+import java.io.File;
 
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
-public class IncorrectImplementationException extends RuntimeException {
-    public IncorrectImplementationException(String message, Throwable cause) {
-        super(message, cause);
-    }
+public class NoDecompressorInformation implements Decompression {
+    @Override
+    public void extraction(File archiveFile) { /* nothing */ }
 }

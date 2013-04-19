@@ -16,41 +16,65 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
+import com.google.common.collect.Maps;
 import com.google.common.io.Files;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.Properties;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.ServiceConfigurationError;
+import java.util.ServiceLoader;
 
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
 public class DecompressionManager {
 
-    private static DecompressionManager ourInstance = null;
-    private final Properties properties = new Properties();
+    private final static Logger LOGGER = LoggerFactory.getLogger(DecompressionManager.class);
 
-    public static DecompressionManager getInstance() throws IOException {
+    private static DecompressionManager ourInstance = null;
+    private final Map<String, Decompression> decompressionImplList;
+
+    public static DecompressionManager getInstance() {
         if (ourInstance == null) {
             ourInstance = new DecompressionManager();
         }
         return ourInstance;
     }
 
-    private DecompressionManager() throws IOException {
-        properties.load(DecompressionManager.class.getResourceAsStream("/decompression.properties"));
+    private DecompressionManager() {
+        LOGGER.debug("test");
+        ServiceLoader<Decompression> decompressionLoader = ServiceLoader.load(Decompression.class);
+        decompressionImplList = Maps.newHashMap();
+        Iterator<? extends Decompression> iterator = decompressionLoader.iterator();
+        while (iterator.hasNext()) {
+            try {
+                Decompression next = iterator.next();
+                LOGGER.debug("Try to load {}", next.getClass().getName());
+                Decompressor annotation = next.getClass().getAnnotation(Decompressor.class);
+                LOGGER.debug("Annotations found: {}", annotation);
+                if (annotation != null) {
+                    for (String extension : annotation.extensions()) {
+                        LOGGER.debug("{} managed by {}", extension, next.getClass().getName());
+                        decompressionImplList.put(extension, next);
+                    }
+                } else {
+                    LOGGER.warn("The class {} doesn't describe the managed extensions. Please refer to Decompressor " +
+                            "annotation documentation.", next.getClass().getName());
+                }
+            } catch (ServiceConfigurationError error) {
+                LOGGER.warn("Configuration error. {}", error.getMessage());
+            }
+        }
     }
 
-    public Decompression getDecompressionImplForFile(String fileName)
-            throws ClassNotFoundException, IllegalAccessException, InstantiationException {
-        String className = (String) properties.get("extensions." + Files.getFileExtension(fileName));
-        if (className == null) {
-            throw new UnsupportedOperationException("The extension of the file " + fileName + " is not supported yet.");
+    public Decompression getDecompressionImplForFile(String fileName) throws ClassNotFoundException {
+        String extension = Files.getFileExtension(fileName);
+        Decompression decompression = decompressionImplList.get(extension);
+        if (decompression == null) {
+            throw new ClassNotFoundException(String.format("There is no class that manage %s extension", extension));
         }
-        try {
-            return (Decompression) Class.forName(className).newInstance();
-        } catch (ClassCastException e) {
-            throw new IncorrectImplementationException("The extension is not managed by an implementation of " +
-                    "org.lecharpentier.media.decompressor.core.extraction.Decompression.", e);
-        }
+        return decompression;
     }
 }

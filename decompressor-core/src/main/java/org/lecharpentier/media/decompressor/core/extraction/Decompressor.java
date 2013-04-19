@@ -16,15 +16,24 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
-import java.io.File;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
+ * Mark a {@see Decompression} implementation as managing a specific type of file, based on its extension.
+ *
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
-@Decompressor(extensions = {"rar"})
-public class DecompressionRarImpl implements Decompression {
-
-    @Override
-    public void extraction(File archiveFile) throws ExtractionError {
-    }
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface Decompressor {
+    /**
+     * The extensions of the file to manage
+     * @return the extension value
+     */
+    String[] extensions();
 }

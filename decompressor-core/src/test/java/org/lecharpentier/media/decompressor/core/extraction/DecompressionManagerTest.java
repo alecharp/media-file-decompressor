@@ -33,18 +33,18 @@ public class DecompressionManagerTest {
         assertThat(decompressionImplForFile).isInstanceOfAny(Decompression.class).isInstanceOf(DecompressionRarImpl.class);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void unsupportedExtension() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    @Test(expected = ClassNotFoundException.class)
+    public void unsupportedExtension() throws ClassNotFoundException {
         DecompressionManager.getInstance().getDecompressionImplForFile("a.lecharp");
     }
 
     @Test(expected = ClassNotFoundException.class)
-    public void classNotFoundForExtension() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    public void classNotFoundForExtension() throws ClassNotFoundException {
         DecompressionManager.getInstance().getDecompressionImplForFile("a.test");
     }
 
-    @Test(expected = IncorrectImplementationException.class)
-    public void invalidClassForExtension() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        DecompressionManager.getInstance().getDecompressionImplForFile("a.drien");
+    @Test(expected = ClassNotFoundException.class)
+    public void invalidClassForExtension() throws ClassNotFoundException {
+        DecompressionManager.getInstance().getDecompressionImplForFile("a.notimplementinginterface");
     }
 }
