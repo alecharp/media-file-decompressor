@@ -16,12 +16,14 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
+import java.io.File;
+
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
 public class DecompressionRarImpl implements Decompression {
 
     @Override
-    public void extraction(String rarFilePath) {
+    public void extraction(File archiveFile) throws ExtractionError {
     }
 }
