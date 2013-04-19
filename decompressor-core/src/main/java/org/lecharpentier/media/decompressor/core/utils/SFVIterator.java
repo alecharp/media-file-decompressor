@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lecharpentier.media.decompressor.core.utils;
 
 import org.lecharpentier.media.decompressor.core.model.ArchiveResource;
@@ -56,5 +57,6 @@ public class SFVIterator implements Iterator<ArchiveResource> {
      * This method does nothing in this implementation
      */
     @Override
-    public void remove() {}
+    public void remove() {
+    }
 }

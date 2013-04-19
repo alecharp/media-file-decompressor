@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.lecharpentier.media.decompressor.core.crc;
 
 import org.lecharpentier.media.decompressor.core.model.ArchiveResource;
@@ -35,9 +36,9 @@ public class CRCValidator {
      * The given CRC must be the Hexadecimal representation of the CRC.
      *
      * @param input the file to test
-     * @param crc the expected CRC of the file, in hexadecimal mode.
+     * @param crc   the expected CRC of the file, in hexadecimal mode.
      * @throws CRCMismatchException if the CRC doesn't match the computed CRC of the file
-     * @throws IOException if there are issues about the file
+     * @throws IOException          if there are issues about the file
      */
     public void valid(File input, String crc) throws IOException, CRCMismatchException {
         InputStream inputStream = new BufferedInputStream(new FileInputStream(input));
