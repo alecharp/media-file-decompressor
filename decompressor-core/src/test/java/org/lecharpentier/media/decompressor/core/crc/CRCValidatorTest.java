@@ -31,7 +31,7 @@ public class CRCValidatorTest {
         File reference = new File(CRCValidatorTest.class.getResource(
                 CRCValidatorTest.class.getSimpleName() + File.separator + "lorem.txt").toURI()
         );
-        new CRCValidator().valid(reference, "6a31a71c");
+        new CRCValidator().validate(reference, "6a31a71c");
     }
 
     @Test(expected = CRCMismatchException.class)
@@ -39,6 +39,6 @@ public class CRCValidatorTest {
         File reference = new File(CRCValidatorTest.class.getResource(
                 CRCValidatorTest.class.getSimpleName() + File.separator + "lorem.txt").toURI()
         );
-        new CRCValidator().valid(reference, "abcd1234");
+        new CRCValidator().validate(reference, "abcd1234");
     }
 }
