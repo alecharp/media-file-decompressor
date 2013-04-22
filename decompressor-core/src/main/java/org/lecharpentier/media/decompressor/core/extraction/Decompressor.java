@@ -16,24 +16,29 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.io.File;
 
 /**
- * Mark a {@see Decompression} implementation as managing a specific type of file, based on its extension.
+ * This Decompressor specifies the methods to implement in order to provide a new implement to manage an archive
+ * extension.
  *
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-@Documented
-public @interface Decompressor {
+public interface Decompressor {
+
     /**
-     * The extensions of the file to manage
-     * @return the extension value
+     * The extension that will be managed by this implementation.
+     *
+     * @return the value of the extension
      */
-    String[] extensions();
+    String getExtension();
+
+    /**
+     * The method to process the decompression of an archive file.
+     *
+     * @param archiveFile the archive file to decompress
+     * @throws ExtractionError if there is an exception during the decompression process.
+     */
+    void decompress(File archiveFile) throws ExtractionError;
+
 }

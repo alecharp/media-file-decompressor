@@ -16,12 +16,8 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
-import java.io.File;
-
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
-public interface Decompression {
-
-    void extraction(File archiveFile) throws ExtractionError;
+public class NotImplementingDecompressor {
 }

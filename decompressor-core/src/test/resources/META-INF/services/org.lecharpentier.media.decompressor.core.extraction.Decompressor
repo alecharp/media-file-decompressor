@@ -1,0 +1,4 @@
+InvalidClass
+org.lecharpentier.media.decompressor.core.extraction.NotImplementingDecompressor
+org.lecharpentier.media.decompressor.core.extraction.NoDecompressorInformation
+org.lecharpentier.media.decompressor.core.extraction.DummyDecompressor

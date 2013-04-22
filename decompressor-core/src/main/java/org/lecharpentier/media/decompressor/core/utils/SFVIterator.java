@@ -18,7 +18,6 @@ package org.lecharpentier.media.decompressor.core.utils;
 
 import org.lecharpentier.media.decompressor.core.model.ArchiveResource;
 
-import java.io.Closeable;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -21,7 +21,11 @@ import java.io.File;
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
-public class NoDecompressorInformation implements Decompression {
+public class NoDecompressorInformation implements Decompressor {
+
     @Override
-    public void extraction(File archiveFile) { /* nothing */ }
+    public String getExtension() { return null; }
+
+    @Override
+    public void decompress(File archiveFile) throws ExtractionError { /* nothing */ }
 }

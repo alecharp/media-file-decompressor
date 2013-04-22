@@ -99,7 +99,6 @@
                         <configuration>
                             <excludes>
                                 <exclude>**/test/resources/**</exclude>
-                                <exclude>**/META-INF/services/org.lecharpentier.media.decompressor.core.extraction.Decompression</exclude>
                             </excludes>
                         </configuration>
                         <executions>

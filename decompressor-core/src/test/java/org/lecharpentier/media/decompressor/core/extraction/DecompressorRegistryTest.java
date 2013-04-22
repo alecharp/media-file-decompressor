@@ -16,6 +16,7 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -25,26 +26,42 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
-public class DecompressionManagerTest {
+public class DecompressorRegistryTest {
+
+    private DecompressorRegistry registry;
+
+    @Before
+    public void setUp() throws Exception {
+        registry = DecompressorRegistry.getInstance();
+    }
 
     @Test
-    public void rarExtension() throws IOException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        Decompression decompressionImplForFile = DecompressionManager.getInstance().getDecompressionImplForFile("toto.rar");
-        assertThat(decompressionImplForFile).isInstanceOfAny(Decompression.class).isInstanceOf(DecompressionRarImpl.class);
+    public void registryShouldFindDecompressors() {
+        assertThat(registry.getSupportedExtensions().size()).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    public void registryShouldHaveDecompressorForDummy() throws ClassNotFoundException {
+        String extension = DummyDecompressor.EXTENSION;
+        assertThat(registry.supportsExtension(extension)).isTrue();
+        assertThat(registry.getForExtension(extension)).isNotNull().isInstanceOf(DummyDecompressor.class);
     }
 
     @Test(expected = ClassNotFoundException.class)
     public void unsupportedExtension() throws ClassNotFoundException {
-        DecompressionManager.getInstance().getDecompressionImplForFile("a.lecharp");
+        assertThat(registry.supportsExtension("lecharp")).isFalse();
+        registry.getForExtension("lecharp");
     }
 
     @Test(expected = ClassNotFoundException.class)
     public void classNotFoundForExtension() throws ClassNotFoundException {
-        DecompressionManager.getInstance().getDecompressionImplForFile("a.test");
+        assertThat(registry.supportsExtension("test")).isFalse();
+        registry.getForExtension("test");
     }
 
     @Test(expected = ClassNotFoundException.class)
     public void invalidClassForExtension() throws ClassNotFoundException {
-        DecompressionManager.getInstance().getDecompressionImplForFile("a.notimplementinginterface");
+        assertThat(registry.supportsExtension("notimplementinginterface")).isFalse();
+        registry.getForExtension("notimplementinginterface");
     }
 }
