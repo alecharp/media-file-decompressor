@@ -35,7 +35,7 @@ public class SFVIterator implements Iterator<ArchiveResource>, AutoCloseable {
     private final Pattern pattern;
 
     public SFVIterator(String sfvFilePath) throws FileNotFoundException {
-        scanner = new Scanner(new FileInputStream(sfvFilePath));
+        scanner = new Scanner(new FileInputStream(sfvFilePath), "UTF-8");
         pattern = Pattern.compile("^([^ ]+) ([^ ]{8})$");
     }
 
@@ -64,7 +64,7 @@ public class SFVIterator implements Iterator<ArchiveResource>, AutoCloseable {
 
     @Override
     public void close() throws IOException {
-        if (scanner!=null) {
+        if (scanner != null) {
             scanner.close();
         }
     }
