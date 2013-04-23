@@ -20,8 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 /**
  * @author Olivier Croisier <olivier.croisier@gmail.com>
@@ -38,12 +36,6 @@ public class DummyDecompressor implements Decompressor {
 
     @Override
     public void decompress(File archiveFile) throws ExtractionError {
-        try (Scanner scanner = new Scanner(archiveFile)) {
-            while (scanner.hasNext()) {
-                LOGGER.debug(scanner.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            LOGGER.warn("There is no such file {}. {}", archiveFile.getAbsolutePath(), e);
-        }
+        LOGGER.warn("Not supposed to be used. Given file is {}", archiveFile.getAbsolutePath());
     }
 }
