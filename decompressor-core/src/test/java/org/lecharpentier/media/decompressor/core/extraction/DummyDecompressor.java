@@ -37,7 +37,7 @@ public class DummyDecompressor implements Decompressor {
     }
 
     @Override
-    public void decompress(File archiveFile) throws ExtractionError {
+    public void decompress(File archiveFile) throws ExtractionException {
         try (Scanner scanner = new Scanner(archiveFile)) {
             while (scanner.hasNext()) {
                 LOGGER.debug(scanner.nextLine());

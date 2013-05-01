@@ -27,5 +27,5 @@ public class NoDecompressorInformation implements Decompressor {
     public String getExtension() { return null; }
 
     @Override
-    public void decompress(File archiveFile) throws ExtractionError { /* nothing */ }
+    public void decompress(File archiveFile) throws ExtractionException { /* nothing */ }
 }
