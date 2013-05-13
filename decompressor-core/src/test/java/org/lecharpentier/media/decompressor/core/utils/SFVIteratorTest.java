@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,7 +30,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SFVIteratorTest {
 
     @Test
-    public void validSFVFile() throws FileNotFoundException {
+    public void validSFVFile() throws FileNotFoundException, URISyntaxException {
         SFVIterator sfvIterator = getSfvIterator("media.sfv");
         int cpt = 0;
         while (sfvIterator.hasNext()) { sfvIterator.next(); cpt += 1; }
@@ -37,16 +38,17 @@ public class SFVIteratorTest {
     }
 
     @Test(expected = IllegalStateException.class)
-    public void invalidSFVFile() throws FileNotFoundException {
+    public void invalidSFVFile() throws FileNotFoundException, URISyntaxException {
         SFVIterator sfvIterator = getSfvIterator("bad-media.sfv");
         while (sfvIterator.hasNext()) { sfvIterator.next(); }
     }
 
-    private SFVIterator getSfvIterator(String fileName) throws FileNotFoundException {
+    private SFVIterator getSfvIterator(String fileName) throws FileNotFoundException, URISyntaxException {
         return new SFVIterator(
-                SFVIteratorTest.class.getResource(
-                        SFVIteratorTest.class.getSimpleName() + File.separator + fileName
-                ).getPath()
+                new File(
+                        SFVIteratorTest.class.getResource(SFVIteratorTest.class.getSimpleName() + File.separator +
+                                fileName).toURI()
+                )
         );
     }
 }

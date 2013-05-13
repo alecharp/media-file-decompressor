@@ -18,6 +18,7 @@ package org.lecharpentier.media.decompressor.core.utils;
 
 import org.lecharpentier.media.decompressor.core.model.ArchiveResource;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -34,8 +35,8 @@ public class SFVIterator implements Iterator<ArchiveResource>, AutoCloseable {
     private final Scanner scanner;
     private final Pattern pattern;
 
-    public SFVIterator(String sfvFilePath) throws FileNotFoundException {
-        scanner = new Scanner(new FileInputStream(sfvFilePath), "UTF-8");
+    public SFVIterator(File sfvFile) throws FileNotFoundException {
+        scanner = new Scanner(new FileInputStream(sfvFile), "UTF-8");
         pattern = Pattern.compile("^([^ ]+) ([^ ]{8})$");
     }
 
