@@ -16,6 +16,7 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.ServiceConfigurationError;
 import java.util.ServiceLoader;
 import java.util.Set;
@@ -72,11 +74,10 @@ public class DecompressorRegistry {
         return decompressors.containsKey(extension);
     }
 
-    public Decompressor getForExtension(String extension) throws ClassNotFoundException {
+    public Decompressor getForExtension(String extension) {
         Decompressor decompression = decompressors.get(extension);
         if (decompression == null) {
-            throw new ClassNotFoundException(String.format("There is no class that can manage the extension %s",
-                    extension));
+            throw new NoSuchElementException("There is no class that can manage the extension "+extension);
         }
         return decompression;
     }

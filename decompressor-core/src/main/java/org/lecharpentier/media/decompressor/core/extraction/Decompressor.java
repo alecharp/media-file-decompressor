@@ -37,8 +37,8 @@ public interface Decompressor {
      * The method to process the decompression of an archive file.
      *
      * @param archiveFile the archive file to decompress
-     * @throws ExtractionError if there is an exception during the decompression process.
+     * @throws ExtractionException if there is an exception during the decompression process.
      */
-    void decompress(File archiveFile) throws ExtractionError;
+    void decompress(File archiveFile) throws ExtractionException;
 
 }

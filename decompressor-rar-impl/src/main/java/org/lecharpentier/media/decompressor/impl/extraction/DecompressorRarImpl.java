@@ -17,7 +17,7 @@
 package org.lecharpentier.media.decompressor.impl.extraction;
 
 import org.lecharpentier.media.decompressor.core.extraction.Decompressor;
-import org.lecharpentier.media.decompressor.core.extraction.ExtractionError;
+import org.lecharpentier.media.decompressor.core.extraction.ExtractionException;
 
 import java.io.File;
 
@@ -32,6 +32,6 @@ public class DecompressorRarImpl implements Decompressor {
     }
 
     @Override
-    public void decompress(File archiveFile) throws ExtractionError {
+    public void decompress(File archiveFile) throws ExtractionException {
     }
 }

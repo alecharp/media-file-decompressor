@@ -16,11 +16,24 @@
 
 package org.lecharpentier.media.decompressor.core.extraction;
 
+import java.io.IOException;
+
 /**
  * @author Adrien Lecharpentier <adrien.lecharpentier@gmail.com>
  */
-public class ExtractionError extends Error {
-    public ExtractionError(String message, Throwable cause) {
+public class ExtractionException extends IOException {
+    public ExtractionException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public ExtractionException(Throwable cause) {
+        super(cause);
+    }
+
+    public ExtractionException() {
+    }
+
+    public ExtractionException(String message) {
+        super(message);
     }
 }

@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package org.lecharpentier.media.decompressor.core.extraction;
+package org.lecharpentier.media.decompressor.core.watcher;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.WatchEvent;
 
 /**
+ * User-defined handler called by a {@link DirectoryWatcher} when an event occurs in a watched directory
+ *
  * @author Olivier Croisier <olivier.croisier@gmail.com>
  */
-public class DummyDecompressor implements Decompressor {
+public interface WatchEventHandler {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(DummyDecompressor.class);
-    public static String EXTENSION = "dummy";
+    /**
+     * Callback method, called whenever an interesting event occurs in a watched directory.
+     *
+     * @param eventKind Type of event (creation, deletion...)
+     * @param eventPath Absolute path to the file or directory that triggered the event
+     */
+    public void onEvent(WatchEvent.Kind eventKind, Path eventPath);
 
-    @Override
-    public String getExtension() {
-        return EXTENSION;
-    }
-
-    @Override
-    public void decompress(File archiveFile) throws ExtractionException {
-        LOGGER.warn("Not supposed to be used. Given file is {}", archiveFile.getAbsolutePath());
-    }
 }

@@ -32,11 +32,13 @@
 
     <modules>
         <module>decompressor-rar-impl</module>
+        <module>decompressor-zip-impl</module>
         <module>decompressor-core</module>
     </modules>
 
     <properties>
         <java.version>1.7</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <developers>
@@ -53,6 +55,13 @@
                 <artifactId>guava</artifactId>
                 <version>14.0.1</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.2</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
