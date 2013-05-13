@@ -17,6 +17,7 @@
 
 package org.lecharpentier.media.decompressor.core.watcher;
 
+import com.google.common.io.Files;
 import org.lecharpentier.media.decompressor.core.extraction.Decompressor;
 import org.lecharpentier.media.decompressor.core.extraction.DecompressorRegistry;
 import org.lecharpentier.media.decompressor.core.extraction.ExtractionException;
@@ -72,10 +73,12 @@ public class StandartWatchEventHandler implements WatchEventHandler {
                 } catch (InterruptedException e) {
                     return;
                 }
+                log.info("{} detected in {}.", fileName, file.getParentFile().getAbsolutePath());
 
                 try {
                     Decompressor decompressor = decompressorRegistry.getForExtension(extension);
                     decompressor.decompress(file);
+                    log.info("{} has be decompressed in {}.", fileName, file.getParentFile().getAbsolutePath());
                 } catch (ExtractionException e) {
                     log.warn("Could not decompress " + fileName, e);
                 }
@@ -83,8 +86,7 @@ public class StandartWatchEventHandler implements WatchEventHandler {
         }
 
         public String getExtension(String fileName) {
-            int lastDotIndex = fileName.lastIndexOf('.');
-            return lastDotIndex == -1 ? null : fileName.substring(lastDotIndex + 1);
+            return Files.getFileExtension(fileName);
         }
     }
 }
