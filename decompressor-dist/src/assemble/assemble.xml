@@ -70,6 +70,7 @@
             <directory>src/resources/conf</directory>
             <fileMode>0644</fileMode>
             <includes>
+                <include>media.properties</include>
                 <include>log4j.xml</include>
             </includes>
         </fileSet>

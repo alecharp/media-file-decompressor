@@ -20,8 +20,6 @@ JAVA=/usr/bin/java
 
 FRIENDLY_NAME="Media Decompressor"
 
-WATCH_DIR=/tmp/
-
 mkdir -p "${MEDIA_HOME}"/{data,log}
 
 PID_FILE="${MEDIA_HOME}"/data/service.pid
@@ -39,7 +37,7 @@ done
 CLASSPATH="${JARS}"
 CONSOLE_LOG="${MEDIA_LOG}"/console.log
 
-MEDIA_OPTS="-Dlog4j.configuration=file:conf/log4j.xml"
+MEDIA_OPTS="-Dlog4j.configuration=file:conf/log4j.xml -Dorg.lecharpentier.media.config.file=${MEDIA_HOME}/conf/media.properties"
 
 getpid() {
   if [ -f "${PID_FILE}" ]; then
@@ -67,7 +65,7 @@ start() {
     exit 1
   fi
   echo "Starting ${FRIENDLY_NAME}.."
-  ${JAVA} ${MEDIA_OPTS} -cp ${CLASSPATH} org.lecharpentier.media.Bootstrap ${WATCH_DIR} >> ${CONSOLE_LOG} 2>&1 & echo $! > "${PID_FILE}"
+  ${JAVA} ${MEDIA_OPTS} -cp ${CLASSPATH} org.lecharpentier.media.Bootstrap >> ${CONSOLE_LOG} 2>&1 & echo $! > "${PID_FILE}"
 }
 
 case "$1" in

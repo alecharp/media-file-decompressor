@@ -19,34 +19,50 @@ package org.lecharpentier.media;
 import org.lecharpentier.media.decompressor.core.watcher.DirectoryWatcher;
 import org.lecharpentier.media.decompressor.core.watcher.StandartWatchEventHandler;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
+import java.util.Enumeration;
+import java.util.Properties;
 
 /**
  * Main entrypoint for the decompressor program
+ *
  * @author Olivier Croisier <olivier.croisier@gmail.com>
  */
 public class Bootstrap {
 
-    public static void main(String[] args) {
-        if (args.length<1) {
-            System.out.println("Usage: java -cp decompressor-core.jar <directory>");
-            System.exit(0);
+    private static final String PROPERTY_PREFIX = "media.directory";
+
+    public static void main(String[] args) throws IOException {
+
+        String configuration = System.getProperty("org.lecharpentier.media.config.file");
+        Properties applicationConfiguration = new Properties();
+        if (configuration != null && Files.exists(Paths.get(configuration))) {
+            applicationConfiguration.load(new FileInputStream(configuration));
         }
 
-        String directory = args[0];
-        try {
-            DirectoryWatcher directoryWatcher = new DirectoryWatcher(
-                    Paths.get(directory),
-                    new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE},
-                    new StandartWatchEventHandler()
-            );
-            directoryWatcher.startWatching();
-        } catch (IOException e) {
-            System.err.println("An error occured : "+e.getMessage());
-            e.printStackTrace();
+        for (Enumeration en = applicationConfiguration.keys(); en.hasMoreElements(); ) {
+            String key = (String) en.nextElement();
+            if (key.startsWith(PROPERTY_PREFIX + ".")) {
+                try {
+                    String directory = applicationConfiguration.getProperty(key);
+                    if (Files.exists(Paths.get(directory)) && Files.isDirectory(Paths.get(directory))) {
+                        DirectoryWatcher directoryWatcher = new DirectoryWatcher(
+                                Paths.get(directory),
+                                new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE},
+                                new StandartWatchEventHandler()
+                        );
+                        directoryWatcher.startWatching();
+                    }
+                } catch (IOException e) {
+                    System.err.println("An error occured : " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
