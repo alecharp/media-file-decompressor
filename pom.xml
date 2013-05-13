@@ -34,6 +34,7 @@
         <module>decompressor-rar-impl</module>
         <module>decompressor-zip-impl</module>
         <module>decompressor-core</module>
+        <module>decompressor-dist</module>
     </modules>
 
     <properties>

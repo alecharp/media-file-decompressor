@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.lecharpentier.media.decompressor.core;
+package org.lecharpentier.media;
 
 import org.lecharpentier.media.decompressor.core.watcher.DirectoryWatcher;
 import org.lecharpentier.media.decompressor.core.watcher.StandartWatchEventHandler;
@@ -28,7 +28,7 @@ import java.nio.file.WatchEvent;
  * Main entrypoint for the decompressor program
  * @author Olivier Croisier <olivier.croisier@gmail.com>
  */
-public class Main {
+public class Bootstrap {
 
     public static void main(String[] args) {
         if (args.length<1) {
@@ -38,7 +38,11 @@ public class Main {
 
         String directory = args[0];
         try {
-            DirectoryWatcher directoryWatcher = new DirectoryWatcher(Paths.get(directory), new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE}, new StandartWatchEventHandler());
+            DirectoryWatcher directoryWatcher = new DirectoryWatcher(
+                    Paths.get(directory),
+                    new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE},
+                    new StandartWatchEventHandler()
+            );
             directoryWatcher.startWatching();
         } catch (IOException e) {
             System.err.println("An error occured : "+e.getMessage());

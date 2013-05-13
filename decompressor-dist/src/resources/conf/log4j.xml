@@ -27,7 +27,7 @@
     </appender>
 
     <logger name="org.lecharpentier.media.decompressor">
-        <level value="debug"/>
+        <level value="info"/>
     </logger>
     <root>
         <priority value="info"/>
