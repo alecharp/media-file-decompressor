@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -47,19 +48,19 @@ public class DecompressorRegistryTest {
         assertThat(registry.getForExtension(extension)).isNotNull().isInstanceOf(DummyDecompressor.class);
     }
 
-    @Test(expected = ClassNotFoundException.class)
+    @Test(expected = NoSuchElementException.class)
     public void unsupportedExtension() throws ClassNotFoundException {
         assertThat(registry.supportsExtension("lecharp")).isFalse();
         registry.getForExtension("lecharp");
     }
 
-    @Test(expected = ClassNotFoundException.class)
+    @Test(expected = NoSuchElementException.class)
     public void classNotFoundForExtension() throws ClassNotFoundException {
         assertThat(registry.supportsExtension("test")).isFalse();
         registry.getForExtension("test");
     }
 
-    @Test(expected = ClassNotFoundException.class)
+    @Test(expected = NoSuchElementException.class)
     public void invalidClassForExtension() throws ClassNotFoundException {
         assertThat(registry.supportsExtension("notimplementinginterface")).isFalse();
         registry.getForExtension("notimplementinginterface");

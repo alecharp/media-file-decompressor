@@ -20,22 +20,18 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-    <appender name="rolling" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="${catalina.base}/logs/sll-dashboard.log"/>
-        <param name="append" value="true"/>
-        <param name="datePattern" value="'.'yyyy-MM-dd"/>
+    <appender name="console" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%d [%t] %-5p %c %x - %m%n"/>
         </layout>
     </appender>
 
     <logger name="org.lecharpentier.media.decompressor">
-        <level value="info"/>
-        <appender-ref ref="rolling"/>
+        <level value="debug"/>
     </logger>
     <root>
-        <priority value="warn"/>
-        <appender-ref ref="rolling"/>
+        <priority value="info"/>
+        <appender-ref ref="console"/>
     </root>
 
 </log4j:configuration>
