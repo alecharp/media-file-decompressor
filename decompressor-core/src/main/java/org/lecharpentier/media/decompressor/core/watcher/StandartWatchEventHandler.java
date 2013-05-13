@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+
 package org.lecharpentier.media.decompressor.core.watcher;
 
 import org.lecharpentier.media.decompressor.core.extraction.Decompressor;
@@ -46,9 +47,7 @@ public class StandartWatchEventHandler implements WatchEventHandler {
         pool.submit(new DecompressionJob(eventPath));
     }
 
-    /**
-     * An ansynchronous job to decompress a file
-     */
+    /** An ansynchronous job to decompress a file */
     private static class DecompressionJob implements Runnable {
 
         private static final Logger log = LoggerFactory.getLogger(DecompressionJob.class);
@@ -78,7 +77,7 @@ public class StandartWatchEventHandler implements WatchEventHandler {
                     Decompressor decompressor = decompressorRegistry.getForExtension(extension);
                     decompressor.decompress(file);
                 } catch (ExtractionException e) {
-                    log.warn("Could not decompress "+fileName, e);
+                    log.warn("Could not decompress " + fileName, e);
                 }
             }
         }
