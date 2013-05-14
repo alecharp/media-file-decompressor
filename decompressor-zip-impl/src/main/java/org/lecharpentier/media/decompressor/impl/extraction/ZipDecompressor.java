@@ -93,7 +93,7 @@ public class ZipDecompressor implements Decompressor {
     }
 
     /**
-     * Decompresses the given Zip archive into the given detination directory
+     * Decompresses the given Zip archive into the given destination directory
      *
      * @param zipFile              The archive file to decompress
      * @param destinationDirectory The directory the archive should be decompressed into
