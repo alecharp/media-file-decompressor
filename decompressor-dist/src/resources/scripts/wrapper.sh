@@ -19,12 +19,13 @@ MEDIA_HOME=`pwd`
 JAVA=/usr/bin/java
 
 FRIENDLY_NAME="Media Decompressor"
+MAIN_CLASS="org.lecharpentier.media.Bootstrap"
 
-mkdir -p "${MEDIA_HOME}"/{data,log}
+mkdir -p "${MEDIA_HOME}"/{data,logs}
 
 PID_FILE="${MEDIA_HOME}"/data/service.pid
 
-MEDIA_LOG="${MEDIA_HOME}/log"
+MEDIA_LOG="${MEDIA_HOME}/logs"
 LIB_DIR="${MEDIA_HOME}/lib"
 
 JARS=""
@@ -43,7 +44,7 @@ getpid() {
   if [ -f "${PID_FILE}" ]; then
     pid=`cat "${PID_FILE}"`
   else
-    pid=""
+    pid="`ps -ef | grep ${MAIN_CLASS} | grep -v grep | awk '{print $2}'`"
   fi
 }
 
@@ -52,7 +53,7 @@ stop() {
   if [ "_" != "_${pid}" ]; then
     echo "Stopping ${FRIENDLY_NAME}.."
     kill $pid
-    rm ${PID_FILE}
+    rm ${PID_FILE} 2>/dev/null
   else
     echo "${FRIENDLY_NAME} is not running"
   fi
@@ -65,7 +66,7 @@ start() {
     exit 1
   fi
   echo "Starting ${FRIENDLY_NAME}.."
-  ${JAVA} ${MEDIA_OPTS} -cp ${CLASSPATH} org.lecharpentier.media.Bootstrap >> ${CONSOLE_LOG} 2>&1 & echo $! > "${PID_FILE}"
+  ${JAVA} ${MEDIA_OPTS} -cp ${CLASSPATH} ${MAIN_CLASS} >> ${CONSOLE_LOG} 2>&1 & echo $! > "${PID_FILE}"
 }
 
 case "$1" in
