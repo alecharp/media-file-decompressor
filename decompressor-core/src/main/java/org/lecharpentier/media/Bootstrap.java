@@ -18,6 +18,8 @@ package org.lecharpentier.media;
 
 import org.lecharpentier.media.decompressor.core.watcher.DirectoryWatcher;
 import org.lecharpentier.media.decompressor.core.watcher.StandartWatchEventHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,6 +37,7 @@ import java.util.Properties;
  */
 public class Bootstrap {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Bootstrap.class);
     private static final String PROPERTY_PREFIX = "media.directory";
 
     public static void main(String[] args) throws IOException {
@@ -53,14 +56,17 @@ public class Bootstrap {
                     if (Files.exists(Paths.get(directory)) && Files.isDirectory(Paths.get(directory))) {
                         DirectoryWatcher directoryWatcher = new DirectoryWatcher(
                                 Paths.get(directory),
-                                new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE},
+                                new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE,
+                                        StandardWatchEventKinds.ENTRY_MODIFY},
                                 new StandartWatchEventHandler()
                         );
                         directoryWatcher.startWatching();
+                        LOGGER.info("Start watching {}", directory);
+                    } else {
+                        LOGGER.warn("Cannot watch {} as doesn't exist or not a directory", directory);
                     }
                 } catch (IOException e) {
-                    System.err.println("An error occured : " + e.getMessage());
-                    e.printStackTrace();
+                    LOGGER.warn("An error occured : " + e.getMessage(), e);
                 }
             }
         }
