@@ -21,13 +21,16 @@ import org.lecharpentier.media.decompressor.core.watcher.StandartWatchEventHandl
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Properties;
 
 /**
@@ -48,25 +51,38 @@ public class Bootstrap {
             applicationConfiguration.load(new FileInputStream(configuration));
         }
 
+        int maxRecursion = Integer.parseInt(applicationConfiguration.getProperty(PROPERTY_PREFIX + ".depth"));
+
         for (Enumeration en = applicationConfiguration.keys(); en.hasMoreElements(); ) {
             String key = (String) en.nextElement();
             if (key.startsWith(PROPERTY_PREFIX + ".")) {
                 try {
                     String directory = applicationConfiguration.getProperty(key);
                     if (Files.exists(Paths.get(directory)) && Files.isDirectory(Paths.get(directory))) {
-                        DirectoryWatcher directoryWatcher = new DirectoryWatcher(
-                                Paths.get(directory),
-                                new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE,
-                                        StandardWatchEventKinds.ENTRY_MODIFY},
-                                new StandartWatchEventHandler()
-                        );
-                        directoryWatcher.startWatching();
-                        LOGGER.info("Start watching {}", directory);
+                        setWatchingOnPath(Paths.get(directory), maxRecursion - 1);
                     } else {
                         LOGGER.warn("Cannot watch {} as doesn't exist or not a directory", directory);
                     }
                 } catch (IOException e) {
                     LOGGER.warn("An error occured : " + e.getMessage(), e);
+                }
+            }
+        }
+    }
+
+    private static void setWatchingOnPath(Path directory, Integer depth) throws IOException {
+        DirectoryWatcher directoryWatcher = new DirectoryWatcher(
+                directory,
+                new WatchEvent.Kind[]{StandardWatchEventKinds.ENTRY_CREATE,
+                        StandardWatchEventKinds.ENTRY_MODIFY},
+                new StandartWatchEventHandler()
+        );
+        directoryWatcher.startWatching();
+        LOGGER.info("Start watching {}", directory);
+        if (depth > 0) {
+            for (File file : directory.toFile().listFiles()) {
+                if (file.isDirectory() && file.canRead()) {
+                    setWatchingOnPath(Paths.get(file.getAbsolutePath()), depth - 1);
                 }
             }
         }
